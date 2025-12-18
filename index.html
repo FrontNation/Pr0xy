@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Graf - Premium Proxy Service</title>
+    <title>Pr0xy - Advanced Proxy System</title>
     <style>
         * {
             margin: 0;
@@ -11,560 +11,926 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-black: #0a0e27;
-            --secondary-black: #1a1f3a;
-            --accent-grey: #2d3561;
-            --light-grey: #4a5580;
-            --text-primary: #e8eaf6;
-            --text-secondary: #b0bec5;
-            --accent-cyan: #00e5ff;
-            --accent-purple: #7c3aed;
-            --border-color: #2d3561;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
-            color: var(--text-primary);
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
         }
 
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            animation: fadeOutLoading 0.8s ease-in-out 2.5s forwards;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loader {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-
-        .loader-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid transparent;
-            border-top-color: var(--accent-cyan);
-            border-radius: 50%;
-            animation: spin 2s linear infinite;
-        }
-
-        .loader-ring:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .loader-ring:nth-child(2) {
-            width: 60px;
-            height: 60px;
-            top: 10px;
-            left: 10px;
-            border-top-color: var(--accent-purple);
-            animation: spin 1.5s linear infinite reverse;
-        }
-
-        .loader-ring:nth-child(3) {
-            width: 40px;
-            height: 40px;
-            top: 20px;
-            left: 20px;
-            border-top-color: var(--accent-cyan);
-            animation: spin 1s linear infinite;
-        }
-
-        .loading-text {
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .loading-subtext {
-            font-size: 12px;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeOutLoading {
-            to {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        @keyframes slideInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.6); }
-        }
-
-        /* Header */
-        header {
-            padding: 30px 50px;
-            background: rgba(26, 31, 58, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: slideInDown 0.8s ease-out;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        nav {
-            display: flex;
-            gap: 40px;
-        }
-
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--accent-cyan);
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        /* Main Content */
-        main {
-            margin-top: 80px;
-            min-height: calc(100vh - 80px);
-            padding: 60px 50px;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 80px;
-            animation: slideInUp 0.8s ease-out 0.3s both;
-        }
-
-        .hero h1 {
-            font-size: 72px;
-            font-weight: 700;
-            letter-spacing: -2px;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, var(--text-primary), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 20px;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
 
-        .btn-primary {
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            color: var(--primary-black);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
         }
 
-        .btn-primary:hover {
-            box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
-            transform: translateY(-3px);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent-cyan);
-            border: 2px solid var(--accent-cyan);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 229, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
-            transform: translateY(-3px);
-        }
-
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 80px 0;
-        }
-
-        .feature-card {
-            background: rgba(45, 53, 97, 0.3);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 40px;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.8s ease-out 0.5s both;
-            cursor: pointer;
-        }
-
-        .feature-card:hover {
-            background: rgba(45, 53, 97, 0.6);
-            border-color: var(--accent-cyan);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
-        }
-
-        .feature-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .feature-card h3 {
-            font-size: 20px;
+        header h1 {
+            font-size: 2.5em;
             margin-bottom: 10px;
-            color: var(--text-primary);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .feature-card p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
         }
 
-        /* Stats Section */
-        .stats {
+        .main-content {
+            display: flex;
+            height: calc(100vh - 200px);
+            max-height: 900px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #f5f5f5;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .proxy-list {
+            list-style: none;
+        }
+
+        .proxy-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .proxy-item:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+
+        .proxy-item.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .proxy-item-name {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .proxy-item-type {
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .url-input-section {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .url-input-section input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .url-input-section input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: white;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: #f9f9f9;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .tab-content {
+            display: none;
+            flex: 1;
+            overflow: auto;
+            background: white;
+            border-radius: 6px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .iframe-container {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .proxy-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin: 60px 0;
-            text-align: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
-            padding: 30px;
-            background: rgba(45, 53, 97, 0.2);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            animation: fadeIn 0.8s ease-out 0.6s both;
-        }
-
-        .stat-number {
-            font-size: 48px;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
         }
 
         .stat-label {
-            color: var(--text-secondary);
-            font-size: 14px;
-            letter-spacing: 1px;
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 5px;
         }
 
-        /* Footer */
-        footer {
-            background: rgba(26, 31, 58, 0.8);
-            border-top: 1px solid var(--border-color);
-            padding: 40px 50px;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 14px;
-            animation: slideInUp 0.8s ease-out;
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
         }
 
-        footer a {
-            color: var(--accent-cyan);
-            text-decoration: none;
-            transition: color 0.3s ease;
+        .settings-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
         }
 
-        footer a:hover {
-            color: var(--accent-purple);
+        .form-group {
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Responsive */
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .log-output {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .log-entry.success {
+            color: #00ff00;
+        }
+
+        .log-entry.error {
+            color: #ff4444;
+        }
+
+        .log-entry.info {
+            color: #44ccff;
+        }
+
+        .log-entry.warning {
+            color: #ffaa00;
+        }
+
+        .close-tab {
+            margin-left: 10px;
+            opacity: 0.6;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .close-tab:hover {
+            opacity: 1;
+            color: #ff4444;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.online {
+            background: #00ff00;
+        }
+
+        .status-indicator.offline {
+            background: #ff4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .add-proxy-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 6px;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            background: #ddd;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
         @media (max-width: 768px) {
-            header {
-                padding: 20px 25px;
+            .main-content {
                 flex-direction: column;
-                gap: 20px;
+                height: auto;
             }
 
-            nav {
-                gap: 20px;
-            }
-
-            main {
-                padding: 40px 20px;
-                margin-top: 100px;
-            }
-
-            .hero h1 {
-                font-size: 48px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
+            .sidebar {
                 width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
             }
 
-            footer {
-                padding: 30px 20px;
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .url-input-section {
+                flex-direction: column;
+            }
+
+            .url-input-section input {
+                min-width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen">
-        <div class="loading-content">
-            <div class="loader">
-                <div class="loader-ring"></div>
-                <div class="loader-ring"></div>
-                <div class="loader-ring"></div>
+    <div class="container">
+        <header>
+            <h1>🌐 Pr0xy</h1>
+            <p>Advanced Multi-Proxy Routing System</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar with Proxy List -->
+            <div class="sidebar">
+                <h3>Active Proxies</h3>
+                <ul class="proxy-list" id="proxyList">
+                    <li class="proxy-item active" data-proxy-id="1">
+                        <div class="proxy-item-name">
+                            <span class="status-indicator online"></span>Default
+                        </div>
+                        <div class="proxy-item-type">Direct Connection</div>
+                    </li>
+                </ul>
+                <button class="add-proxy-btn" onclick="showAddProxyModal()">+ Add Proxy</button>
             </div>
-            <div class="loading-text">GRAF</div>
-            <div class="loading-subtext">INITIALIZING CONNECTION</div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- URL Input Section -->
+                <div class="url-input-section">
+                    <input type="text" id="urlInput" placeholder="Enter URL to load through proxy..." />
+                    <button onclick="loadURL()">Load URL</button>
+                </div>
+
+                <!-- Tabs for Different Views -->
+                <div class="tabs" id="tabContainer">
+                    <button class="tab-button active" data-tab="browser">
+                        🌐 Browser
+                        <span class="close-tab" onclick="closeTab(event, 'browser')" style="display: none;">✕</span>
+                    </button>
+                    <button class="tab-button" data-tab="console">
+                        📋 Console
+                    </button>
+                    <button class="tab-button" data-tab="stats">
+                        📊 Statistics
+                    </button>
+                    <button class="tab-button" data-tab="settings">
+                        ⚙️ Settings
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content active" id="browser-tab">
+                    <div class="iframe-container">
+                        <iframe id="proxyFrame" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation"></iframe>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="console-tab">
+                    <div style="margin-bottom: 15px;">
+                        <button onclick="clearLogs()">Clear Logs</button>
+                    </div>
+                    <div class="log-output" id="logOutput"></div>
+                </div>
+
+                <div class="tab-content" id="stats-tab">
+                    <div class="proxy-stats" id="statsContainer">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Requests</div>
+                            <div class="stat-value" id="totalRequests">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Successful Requests</div>
+                            <div class="stat-value" id="successRequests">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Failed Requests</div>
+                            <div class="stat-value" id="failedRequests">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Data Transferred</div>
+                            <div class="stat-value" id="dataTransferred">0 KB</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Active Proxies</div>
+                            <div class="stat-value" id="activeProxies">1</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Avg Response Time</div>
+                            <div class="stat-value" id="avgResponseTime">0 ms</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="settings-tab">
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label for="proxyTimeout">Proxy Timeout (seconds)</label>
+                            <input type="number" id="proxyTimeout" value="30" min="1" max="300" />
+                        </div>
+                        <div class="form-group">
+                            <label for="proxyRotation">Enable Proxy Rotation</label>
+                            <select id="proxyRotation">
+                                <option value="disabled">Disabled</option>
+                                <option value="round-robin">Round Robin</option>
+                                <option value="random">Random</option>
+                                <option value="least-used">Least Used</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="requestHeaders">Custom Headers (JSON)</label>
+                            <textarea id="requestHeaders" rows="5" placeholder='{"User-Agent": "Custom Agent", "X-Custom": "value"}'>{}</textarea>
+                        </div>
+                        <button onclick="saveSettings()">Save Settings</button>
+                        <button class="btn-cancel" onclick="resetSettings()">Reset to Default</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Header -->
-    <header>
-        <div class="logo">GRAF</div>
-        <nav>
-            <a href="#features">FEATURES</a>
-            <a href="#pricing">PRICING</a>
-            <a href="#docs">DOCUMENTATION</a>
-            <a href="#contact">CONTACT</a>
-        </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>Next-Generation Proxy Service</h1>
-            <p>Experience lightning-fast, secure, and reliable proxy services with unmatched performance</p>
-            <div class="cta-buttons">
-                <button class="btn btn-primary">Get Started</button>
-                <button class="btn btn-secondary">Learn More</button>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features">
-            <h2 style="text-align: center; font-size: 36px; margin-bottom: 60px; letter-spacing: 2px;">KEY FEATURES</h2>
-            <div class="features">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Ultra-Fast</h3>
-                    <p>Lightning-quick connection speeds with optimized global infrastructure</p>
+    <!-- Add Proxy Modal -->
+    <div class="modal" id="addProxyModal">
+        <div class="modal-content">
+            <h2>Add New Proxy</h2>
+            <div class="settings-form">
+                <div class="form-group">
+                    <label for="proxyName">Proxy Name</label>
+                    <input type="text" id="proxyName" placeholder="e.g., Proxy Server 1" />
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Secure</h3>
-                    <p>Military-grade encryption and advanced security protocols</p>
+                <div class="form-group">
+                    <label for="proxyType">Proxy Type</label>
+                    <select id="proxyType">
+                        <option value="http">HTTP</option>
+                        <option value="https">HTTPS</option>
+                        <option value="socks5">SOCKS5</option>
+                    </select>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>Global</h3>
-                    <p>500+ servers in 100+ countries for maximum coverage</p>
+                <div class="form-group">
+                    <label for="proxyHost">Host</label>
+                    <input type="text" id="proxyHost" placeholder="proxy.example.com" />
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Analytics</h3>
-                    <p>Real-time monitoring and detailed performance metrics</p>
+                <div class="form-group">
+                    <label for="proxyPort">Port</label>
+                    <input type="number" id="proxyPort" placeholder="8080" min="1" max="65535" />
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Performance</h3>
-                    <p>99.99% uptime with redundant infrastructure</p>
+                <div class="form-group">
+                    <label for="proxyUsername">Username (Optional)</label>
+                    <input type="text" id="proxyUsername" placeholder="username" />
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💼</div>
-                    <h3>Professional</h3>
-                    <p>24/7 dedicated support for enterprise clients</p>
+                <div class="form-group">
+                    <label for="proxyPassword">Password (Optional)</label>
+                    <input type="password" id="proxyPassword" placeholder="password" />
                 </div>
             </div>
-        </section>
-
-        <!-- Stats Section -->
-        <section class="stats">
-            <div class="stat-card">
-                <div class="stat-number">99.99%</div>
-                <div class="stat-label">UPTIME GUARANTEE</div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeAddProxyModal()">Cancel</button>
+                <button onclick="addNewProxy()">Add Proxy</button>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">500+</div>
-                <div class="stat-label">GLOBAL SERVERS</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">1M+</div>
-                <div class="stat-label">ACTIVE USERS</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">10Gbps</div>
-                <div class="stat-label">MAX SPEED</div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 GRAF - Premium Proxy Service. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-    </footer>
+        </div>
+    </div>
 
     <script>
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // State Management
+        const state = {
+            proxies: [
+                {
+                    id: 1,
+                    name: 'Default',
+                    type: 'direct',
+                    host: 'local',
+                    port: 0,
+                    status: 'online',
+                    requests: 0,
+                    errors: 0,
+                    dataTransferred: 0,
+                    avgResponseTime: 0
                 }
-            });
-        });
-
-        // Add animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
+            ],
+            currentProxy: 1,
+            currentTab: 'browser',
+            stats: {
+                totalRequests: 0,
+                successRequests: 0,
+                failedRequests: 0,
+                dataTransferred: 0,
+                avgResponseTime: 0
+            },
+            settings: {
+                timeout: 30,
+                rotation: 'disabled',
+                headers: {}
+            },
+            logs: [],
+            requestTimes: []
         };
 
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'slideInUp 0.8s ease-out forwards';
-                    observer.unobserve(entry.target);
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupTabListeners();
+            setupProxyListeners();
+            loadSettings();
+            addLog('System initialized', 'info');
+            addLog('Default proxy activated', 'success');
+        });
+
+        // Tab Management
+        function setupTabListeners() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            state.currentTab = tabName;
+            addLog(`Switched to ${tabName} tab`, 'info');
+
+            // Update stats when switching to stats tab
+            if (tabName === 'stats') {
+                updateStats();
+            }
+        }
+
+        function closeTab(event, tabName) {
+            event.stopPropagation();
+            // Implementation for closing tabs
+        }
+
+        // Proxy Management
+        function setupProxyListeners() {
+            const proxyList = document.getElementById('proxyList');
+            proxyList.addEventListener('click', function(e) {
+                const proxyItem = e.target.closest('.proxy-item');
+                if (proxyItem) {
+                    selectProxy(proxyItem.dataset.proxyId);
                 }
             });
-        }, observerOptions);
+        }
 
-        document.querySelectorAll('.feature-card, .stat-card').forEach(el => {
-            observer.observe(el);
+        function selectProxy(proxyId) {
+            document.querySelectorAll('.proxy-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-proxy-id="${proxyId}"]`).classList.add('active');
+            state.currentProxy = parseInt(proxyId);
+            addLog(`Proxy switched to: ${state.proxies[proxyId - 1].name}`, 'info');
+            updateStats();
+        }
+
+        function showAddProxyModal() {
+            document.getElementById('addProxyModal').classList.add('active');
+        }
+
+        function closeAddProxyModal() {
+            document.getElementById('addProxyModal').classList.remove('active');
+            clearProxyForm();
+        }
+
+        function clearProxyForm() {
+            document.getElementById('proxyName').value = '';
+            document.getElementById('proxyType').value = 'http';
+            document.getElementById('proxyHost').value = '';
+            document.getElementById('proxyPort').value = '';
+            document.getElementById('proxyUsername').value = '';
+            document.getElementById('proxyPassword').value = '';
+        }
+
+        function addNewProxy() {
+            const name = document.getElementById('proxyName').value.trim();
+            const type = document.getElementById('proxyType').value;
+            const host = document.getElementById('proxyHost').value.trim();
+            const port = document.getElementById('proxyPort').value;
+
+            if (!name || !host || !port) {
+                addLog('Please fill in all required fields', 'error');
+                return;
+            }
+
+            const newProxy = {
+                id: state.proxies.length + 1,
+                name: name,
+                type: type,
+                host: host,
+                port: parseInt(port),
+                status: 'testing',
+                requests: 0,
+                errors: 0,
+                dataTransferred: 0,
+                avgResponseTime: 0
+            };
+
+            state.proxies.push(newProxy);
+            renderProxyList();
+            addLog(`New proxy added: ${name}`, 'success');
+
+            // Simulate proxy testing
+            setTimeout(() => {
+                newProxy.status = 'online';
+                renderProxyList();
+                addLog(`Proxy ${name} is online and ready`, 'success');
+            }, 2000);
+
+            closeAddProxyModal();
+        }
+
+        function renderProxyList() {
+            const proxyList = document.getElementById('proxyList');
+            proxyList.innerHTML = state.proxies.map(proxy => `
+                <li class="proxy-item ${proxy.id === state.currentProxy ? 'active' : ''}" data-proxy-id="${proxy.id}">
+                    <div class="proxy-item-name">
+                        <span class="status-indicator ${proxy.status === 'online' ? 'online' : 'offline'}"></span>${proxy.name}
+                    </div>
+                    <div class="proxy-item-type">${proxy.type.toUpperCase()} - ${proxy.host}:${proxy.port}</div>
+                </li>
+            `).join('');
+
+            setupProxyListeners();
+            updateStats();
+        }
+
+        // URL Loading
+        function loadURL() {
+            const url = document.getElementById('urlInput').value.trim();
+            
+            if (!url) {
+                addLog('Please enter a URL', 'error');
+                return;
+            }
+
+            // Validate URL format
+            try {
+                new URL(url.startsWith('http') ? url : 'http://' + url);
+            } catch (e) {
+                addLog('Invalid URL format', 'error');
+                return;
+            }
+
+            const startTime = performance.now();
+            const currentProxy = state.proxies[state.currentProxy - 1];
+
+            addLog(`Loading URL through ${currentProxy.name}...`, 'info');
+            addLog(`Target: ${url}`, 'info');
+
+            state.stats.totalRequests++;
+            currentProxy.requests++;
+
+            try {
+                const fullUrl = url.startsWith('http') ? url : 'http://' + url;
+                document.getElementById('proxyFrame').src = fullUrl;
+
+                // Simulate successful load
+                setTimeout(() => {
+                    const endTime = performance.now();
+                    const responseTime = Math.round(endTime - startTime);
+                    
+                    state.stats.successRequests++;
+                    currentProxy.dataTransferred += Math.random() * 500;
+                    state.stats.dataTransferred += Math.random() * 500;
+                    
+                    state.requestTimes.push(responseTime);
+                    if (state.requestTimes.length > 100) {
+                        state.requestTimes.shift();
+                    }
+                    
+                    state.stats.avgResponseTime = Math.round(
+                        state.requestTimes.reduce((a, b) => a + b, 0) / state.requestTimes.length
+                    );
+                    currentProxy.avgResponseTime = state.stats.avgResponseTime;
+
+                    addLog(`✓ Page loaded successfully in ${responseTime}ms`, 'success');
+                    updateStats();
+                }, 500);
+            } catch (error) {
+                state.stats.failedRequests++;
+                currentProxy.errors++;
+                addLog(`✗ Failed to load: ${error.message}`, 'error');
+                updateStats();
+            }
+        }
+
+        // Logging System
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = {
+                message: message,
+                type: type,
+                timestamp: timestamp
+            };
+
+            state.logs.push(logEntry);
+
+            // Keep only last 500 logs
+            if (state.logs.length > 500) {
+                state.logs.shift();
+            }
+
+            renderLogs();
+        }
+
+        function renderLogs() {
+            const logOutput = document.getElementById('logOutput');
+            logOutput.innerHTML = state.logs.map(log => `
+                <div class="log-entry ${log.type}">
+                    [${log.timestamp}] <strong>${log.type.toUpperCase()}:</strong> ${log.message}
+                </div>
+            `).join('');
+
+            // Auto-scroll to bottom
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        function clearLogs() {
+            state.logs = [];
+            renderLogs();
+            addLog('Logs cleared', 'info');
+        }
+
+        // Statistics
+        function updateStats() {
+            document.getElementById('totalRequests').textContent = state.stats.totalRequests;
+            document.getElementById('successRequests').textContent = state.stats.successRequests;
+            document.getElementById('failedRequests').textContent = state.stats.failedRequests;
+            document.getElementById('dataTransferred').textContent = (state.stats.dataTransferred).toFixed(2) + ' KB';
+            document.getElementById('activeProxies').textContent = state.proxies.filter(p => p.status === 'online').length;
+            document.getElementById('avgResponseTime').textContent = state.stats.avgResponseTime + ' ms';
+        }
+
+        // Settings Management
+        function saveSettings() {
+            const timeout = parseInt(document.getElementById('proxyTimeout').value);
+            const rotation = document.getElementById('proxyRotation').value;
+            const headersJson = document.getElementById('requestHeaders').value;
+
+            try {
+                const headers = JSON.parse(headersJson);
+                state.settings.timeout = timeout;
+                state.settings.rotation = rotation;
+                state.settings.headers = headers;
+
+                localStorage.setItem('proxySettings', JSON.stringify(state.settings));
+                addLog('Settings saved successfully', 'success');
+            } catch (error) {
+                addLog('Invalid JSON in custom headers', 'error');
+            }
+        }
+
+        function resetSettings() {
+            state.settings = {
+                timeout: 30,
+                rotation: 'disabled',
+                headers: {}
+            };
+            document.getElementById('proxyTimeout').value = 30;
+            document.getElementById('proxyRotation').value = 'disabled';
+            document.getElementById('requestHeaders').value = '{}';
+            localStorage.removeItem('proxySettings');
+            addLog('Settings reset to default', 'info');
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('proxySettings');
+            if (saved) {
+                try {
+                    state.settings = JSON.parse(saved);
+                    document.getElementById('proxyTimeout').value = state.settings.timeout;
+                    document.getElementById('proxyRotation').value = state.settings.rotation;
+                    document.getElementById('requestHeaders').value = JSON.stringify(state.settings.headers, null, 2);
+                    addLog('Settings loaded from storage', 'info');
+                } catch (error) {
+                    addLog('Error loading settings', 'error');
+                }
+            }
+        }
+
+        // Initialize stats display
+        updateStats();
+
+        // Allow Enter key to load URL
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loadURL();
+            }
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('addProxyModal');
+            if (e.target === modal) {
+                closeAddProxyModal();
+            }
         });
     </script>
 </body>
